@@ -1,0 +1,2 @@
+option('custom-tapi-include', type : 'string', description : 'Path to tapi include dir')
+option('supported-archs', type : 'array', value : [ 'i386', 'x86_64', 'x86_64h', 'armv6', 'armv7', 'armv7s', 'armv7m', 'armv7k', 'arm64', 'arm64e', 'arm64_32'])

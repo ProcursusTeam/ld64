@@ -29,7 +29,22 @@
 #define _H_ENDIAN
 
 #include <machine/endian.h>
-#include <libkern/OSByteOrder.h>
+#if __APPLE__
+# include <libkern/OSByteOrder.h>
+#else
+# include <arpa/inet.h>
+# include <netinet/in.h>
+# if __has_include(<endian.h>)
+#  include <endian.h>
+# else
+#  include <sys/endian.h>
+# endif
+# define OSSwapHostToBigInt64(x) htobe64(x)
+# define OSSwapBigToHostInt64(x) be64toh(x)
+# define OSSwapInt64(x) bswap64(x)
+# define OSSwapInt32(x) bswap32(x)
+# define OSSwapInt16(x) bswap16(x)
+#endif
 //#include <security_utilities/utilities.h>
 #include "memutils.h"
 
