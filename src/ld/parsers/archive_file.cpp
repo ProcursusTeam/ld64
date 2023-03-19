@@ -22,6 +22,7 @@
  * @APPLE_LICENSE_HEADER_END@
  */
 
+#include <stdarg.h>
 #include <stdint.h>
 #include <math.h>
 #include <unistd.h>

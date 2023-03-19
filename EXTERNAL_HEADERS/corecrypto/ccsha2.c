@@ -1,9 +1,7 @@
-#if !defined(__APPLE__) || !__has_include(<corecrypto/ccdigest.h>)
+#include <corecrypto/ccdigest.h>
+#include <corecrypto/ccsha2.h>
 
-#include "compat_corecrypto/ccdigest.h"
-#include "compat_corecrypto/ccsha2.h"
-
-#include "sha256.h"
+#include <openssl/sha.h>
 
 static void ccsha256_init(struct ccdigest_ctx *ctx_) {
 	SHA256_CTX *ctx = (SHA256_CTX *)ctx_;
@@ -17,7 +15,7 @@ static void ccsha256_update(struct ccdigest_ctx *ctx_, size_t size, const void *
 
 static void ccsha256_final(struct ccdigest_ctx *ctx_, void *digest) {
 	SHA256_CTX *ctx = (SHA256_CTX *)ctx_;
-	SHA256_Final(ctx, digest);
+	SHA256_Final(digest, ctx);
 }
 
 static const struct ccdigest_info ccsha256_info = {
@@ -30,5 +28,3 @@ static const struct ccdigest_info ccsha256_info = {
 const struct ccdigest_info *ccsha256_di(void) {
 	return &ccsha256_info;
 }
-
-#endif /* !__APPLE__ || !__has_include(<corecrypto/ccdigest.h>) */

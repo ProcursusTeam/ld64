@@ -25,6 +25,7 @@
  
 #define HAVE_LIBDISPATCH 1
 
+#include <stdarg.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -70,6 +71,8 @@
 #include "Containers.h"
 #include "Snapshot.h"
 #include "FatFile.h"
+
+#define MIN(a, b) (((a)<(b))?(a):(b))
 
 const bool _s_logPThreads = false;
 
@@ -255,11 +258,17 @@ ld::File* InputFiles::makeFile(const Options::FileInfo& info, bool indirectDylib
 	// <rdar://problem/69569058>
 	// On macOS 10.15 MAP_RESILIENT_CODESIGN doesn't work, so we need to first try
 	// with the flag and then without it.
+#ifdef MAP_RESILIENT_CODESIGN
 	int flags = MAP_FILE | MAP_PRIVATE | MAP_RESILIENT_CODESIGN;
+#else
+	int flags = MAP_FILE | MAP_PRIVATE;
+#endif
 	uint8_t* p = (uint8_t*)::mmap(NULL, stat_buf.st_size, PROT_READ, flags, fd, 0);
 	if ( p == MAP_FAILED ) {
+#ifdef MAP_RESILIENT_CODESIGN
 		flags &= ~MAP_RESILIENT_CODESIGN;
 		p = (uint8_t*)::mmap(NULL, stat_buf.st_size, PROT_READ, flags, fd, 0);
+#endif
 		if ( p == MAP_FAILED ) {
 			throwf("can't map file, errno=%d", errno);
 		}
@@ -339,14 +348,22 @@ ld::File* InputFiles::makeFile(const Options::FileInfo& info, bool indirectDylib
 				// <rdar://problem/69569058>
 				// On macOS 10.15 MAP_RESILIENT_CODESIGN doesn't work, so we need to first try
 				// with the flag and then without it.
+#ifdef MAP_RESILIENT_CODESIGN
 				int flags = MAP_FILE | MAP_PRIVATE | MAP_RESILIENT_CODESIGN;
+#else
+				int flags = MAP_FILE | MAP_PRIVATE;
+#endif
 				p = (uint8_t*)::mmap(NULL, sliceLength, PROT_READ, flags, fd, sliceOffset);
 				if ( p == MAP_FAILED ) {
+#ifdef MAP_RESILIENT_CODESIGN
 					flags &= ~MAP_RESILIENT_CODESIGN;
 					p = (uint8_t*)::mmap(NULL, sliceLength, PROT_READ, flags, fd, sliceOffset);
 					if ( p == MAP_FAILED ) {
+#endif
 						throwf("can't re-map file, errno=%d", errno);
+#ifdef MAP_RESILIENT_CODESIGN
 					}
+#endif
 				}
 			}
 			else {

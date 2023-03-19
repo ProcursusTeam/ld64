@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Apple Inc. All rights reserved.
 //
 
+#include <stdarg.h>
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
@@ -22,6 +23,10 @@
 #include "Options.h"
 
 #include "compile_stubs.h"
+
+#if !__APPLE__
+extern "C" int mkpath_np(const char *, mode_t);
+#endif
 
 //#define STORE_PID_IN_SNAPSHOT 1
 

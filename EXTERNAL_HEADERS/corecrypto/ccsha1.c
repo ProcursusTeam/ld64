@@ -1,27 +1,25 @@
-#if !defined(__APPLE__) || !__has_include(<corecrypto/ccdigest.h>)
+#include <corecrypto/ccdigest.h>
+#include <corecrypto/ccsha1.h>
 
-#include "compat_corecrypto/ccdigest.h"
-#include "compat_corecrypto/ccsha1.h"
-
-#include "sha1.h"
+#include <openssl/sha.h>
 
 static void ccsha1_init(struct ccdigest_ctx *ctx_) {
-	SHA1_CTX *ctx = (SHA1_CTX *)ctx_;
+	SHA_CTX *ctx = (SHA_CTX *)ctx_;
 	SHA1_Init(ctx);
 }
 
 static void ccsha1_update(struct ccdigest_ctx *ctx_, size_t size, const void *data) {
-	SHA1_CTX *ctx = (SHA1_CTX *)ctx_;
+	SHA_CTX *ctx = (SHA_CTX *)ctx_;
 	SHA1_Update(ctx, (const uint8_t *)data, size);
 }
 
 static void ccsha1_final(struct ccdigest_ctx *ctx_, void *digest) {
-	SHA1_CTX *ctx = (SHA1_CTX *)ctx_;
-	SHA1_Final(ctx, digest);
+	SHA_CTX *ctx = (SHA_CTX *)ctx_;
+	SHA1_Final(digest, ctx);
 }
 
 static const struct ccdigest_info ccsha1_info = {
-	sizeof(SHA1_CTX),
+	sizeof(SHA_CTX),
 	ccsha1_init,
 	ccsha1_update,
 	ccsha1_final
@@ -30,5 +28,3 @@ static const struct ccdigest_info ccsha1_info = {
 const struct ccdigest_info *ccsha1_di(void) {
 	return &ccsha1_info;
 }
-
-#endif /* !__APPLE__ || !__has_include(<corecrypto/ccdigest.h>) */

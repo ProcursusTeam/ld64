@@ -14,6 +14,10 @@ endforeach
 
 conf_data.set('ALL_SUPPORTED_ARCHS', '"@0@"'.format(' '.join(archs)))
 
+if host_machine.system() != 'darwin'
+  conf_data.set('MAXPATHLEN', 'PATH_MAX')
+endif
+
 configure_file(output : 'configure.h',
                configuration : conf_data)
 incdirs += include_directories('.')

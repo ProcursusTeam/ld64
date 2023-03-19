@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <dlfcn.h>
 #include <mach-o/loader.h>
-#include <mach-o/getsect.h>
+//#include <mach-o/getsect.h>
 #include <mach-o/dyld_priv.h>
 #include <Availability.h>
 

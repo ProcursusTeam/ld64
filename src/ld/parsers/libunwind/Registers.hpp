@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <dlfcn.h>
 #include <mach-o/loader.h>
-#include <mach-o/getsect.h>
+//#include <mach-o/getsect.h>
 
 #include "libunwind.h"
 #include "InternalMacros.h"

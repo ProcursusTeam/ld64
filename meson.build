@@ -9,6 +9,8 @@ srcs = []
 unwinddumpsrcs = []
 incdirs = []
 subdir('src')
+subdir('doc')
+subdir('EXTERNAL_HEADERS')
 
 srcs += custom_target(
   'compile_stubs.h',
@@ -16,16 +18,29 @@ srcs += custom_target(
   input : 'compile_stubs',
   command : [find_program('src/custom/create_header.sh'), '@INPUT@', '@OUTPUT@', 'compile_stubs'])
 
-incdirs += include_directories('EXTERNAL_HEADERS')
+llvm = dependency('llvm', modules : ['lto'])
+blocks = dependency('blocks')
 
-llvm_dep = dependency('llvm', modules : ['lto'])
+libs = ['-lxar', '-ltapi']
+deps = [llvm.partial_dependency(includes : true, compile_args : true), blocks]
 
-ld = executable('ld64', srcs,
+if host_machine.system() != 'darwin'
+  openssl = dependency('openssl')
+  deps += openssl # For corecrypto and CommonCrypto compat
+endif
+
+if host_machine.system() == 'freebsd'
+  libs += '-lexecinfo' # For backtrace()
+endif
+
+ld64 = executable(get_option('program-prefix') + 'ld64', srcs,
   include_directories : incdirs,
-  link_args: ['-lxar', '-ltapi'],
-  dependencies: llvm_dep.partial_dependency(includes : true),
+  link_args: libs,
+  dependencies: deps,
   install : true)
 
-unwinddump = executable('unwinddump', unwinddumpsrcs,
+install_symlink(get_option('program-prefix') + 'ld', pointing_to : get_option('program-prefix') + 'ld64', install_dir : get_option('bindir'))
+
+unwinddump = executable(get_option('program-prefix') + 'unwinddump', unwinddumpsrcs,
   include_directories : incdirs,
   install : true)

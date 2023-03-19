@@ -3966,11 +3966,16 @@ void OutputFile::computeContentUUID(ld::Internal& state, uint8_t* wholeBuffer)
 static int sDescriptorOfPathToRemove = -1;
 static void removePathAndExit(int sig)
 {
+#if __APPLE__
 	if ( sDescriptorOfPathToRemove != -1 ) {
 		char path[MAXPATHLEN];
 		if ( ::fcntl(sDescriptorOfPathToRemove, F_GETPATH, path) == 0 )
 			::unlink(path);
 	}
+#else
+	fprintf(stderr, "Cameron: We didn't clean up...\n");
+#endif
+	fprintf(stderr, "ld: interrupted\n");
 	// we are in a sig handler, don't do clean ups
 	_exit(1);
 }
@@ -4011,7 +4016,7 @@ void OutputFile::writeOutputFile(ld::Internal& state)
 
 	// assume mappable by default
 	bool outputIsMappableFile = true;
-
+#if defined (__APPLE__)
 #if __arm64__
 	// <rdar://problem/66598213> work around VM limitation on Apple Silicon and use write() instead of mmap() to produce output file
 	outputIsMappableFile = false;
@@ -4052,7 +4057,7 @@ void OutputFile::writeOutputFile(ld::Internal& state)
 			}
 		}
 	}
-
+#endif
 	//fprintf(stderr, "outputIsMappableFile=%d, outputIsRegularFile=%d, path=%s\n", outputIsMappableFile, outputIsRegularFile, _options.outputFilePath());
 	
 	int fd;

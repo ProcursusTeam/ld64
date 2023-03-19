@@ -10,6 +10,7 @@
 #include <errno.h>
 
 #include <arpa/inet.h>
+#include <libkern/OSByteOrder.h>
 
 #include <sys/mman.h>
 #include <sys/queue.h>

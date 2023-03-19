@@ -1637,6 +1637,7 @@ int main(int argc, const char* argv[])
 static os_lock_unfair_s  sAssertLock = OS_LOCK_UNFAIR_INIT;
 
 // implement assert() function to print out a backtrace before aborting
+extern "C"
 void __assert_rtn(const char* func, const char* file, int line, const char* failedexpr)
 {
 	os_lock_lock(&sAssertLock);

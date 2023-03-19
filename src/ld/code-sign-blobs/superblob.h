@@ -4,6 +4,8 @@
 #ifndef _H_SUPERBLOB
 #define _H_SUPERBLOB
 
+#include <stdarg.h>
+
 #include "blob.h"
 #include <assert.h>
 #include <utility>
