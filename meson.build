@@ -6,7 +6,9 @@ project('ld64', ['cpp', 'c'],
 archs = get_option('supported-archs')
 
 srcs = []
-unwinddumpsrcs = []
+unwinddump_srcs = []
+prunetrie_srcs = []
+prunetrie_inc = []
 incdirs = []
 subdir('src')
 subdir('doc')
@@ -41,6 +43,13 @@ ld64 = executable(get_option('program-prefix') + 'ld64', srcs,
 
 install_symlink(get_option('program-prefix') + 'ld', pointing_to : get_option('program-prefix') + 'ld64', install_dir : get_option('bindir'))
 
-unwinddump = executable(get_option('program-prefix') + 'unwinddump', unwinddumpsrcs,
+unwinddump = executable(get_option('program-prefix') + 'unwinddump', unwinddump_srcs,
   include_directories : incdirs,
   install : true)
+
+libprunetrie = static_library('prunetrie', prunetrie_srcs,
+  include_directories : prunetrie_inc,
+  install : false)
+
+libprunetrie_dep = declare_dependency(include_directories : prunetrie_inc,
+  link_with : libprunetrie)

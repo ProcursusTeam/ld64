@@ -20,4 +20,6 @@ endif
 
 configure_file(output : 'configure.h',
                configuration : conf_data)
+
 incdirs += include_directories('.')
+prunetrie_inc += include_directories('.')
