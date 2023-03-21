@@ -48,7 +48,7 @@ unwinddump = executable(get_option('program-prefix') + 'unwinddump', unwinddump_
   install : true)
 
 libprunetrie = static_library('prunetrie', prunetrie_srcs,
-  include_directories : prunetrie_inc,
+  include_directories : [prunetrie_inc, incdirs],
   install : false)
 
 libprunetrie_dep = declare_dependency(include_directories : prunetrie_inc,

@@ -21,6 +21,7 @@
  * 
  * @APPLE_LICENSE_HEADER_END@
  */
+#include <stdio.h>
 #include <vector>
 #include <algorithm>
 
