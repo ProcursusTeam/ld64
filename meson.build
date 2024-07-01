@@ -1,5 +1,5 @@
 project('ld64', ['cpp', 'c'],
-  version : '711',
+  version : '951.9',
   default_options : ['warning_level=3',
                      'cpp_std=gnu++17'])
 
