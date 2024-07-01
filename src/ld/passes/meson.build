@@ -10,6 +10,7 @@ srcs += files('bitcode_bundle.cpp',
               'inits.cpp',
               'objc_constants.cpp',
               'objc.cpp',
+              'objc_stubs.cpp',
               'order.cpp',
               'thread_starts.cpp',
               'tlvp.cpp')

@@ -15,7 +15,7 @@ struct ccdigest_info {
 	void (*final)(struct ccdigest_ctx *ctx, void *digest);
 };
 
-#define ccdigest_di_decl(di, ctx) struct ccdigest_ctx *ctx = calloc(1, di->state_len)
+#define ccdigest_di_decl(di, ctx) struct ccdigest_ctx *ctx = (struct ccdigest_ctx *)calloc(1, di->state_len)
 #define ccdigest_init(di, ...) (di)->init(__VA_ARGS__)
 #define ccdigest_update(di, ...) (di)->update(__VA_ARGS__)
 #define ccdigest_final(di, ...) (di)->final(__VA_ARGS__)

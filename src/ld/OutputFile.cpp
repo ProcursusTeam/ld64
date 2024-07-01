@@ -56,6 +56,7 @@ extern "C" {
 #include <fstream>
 
 #include <CommonCrypto/CommonDigest.h>
+#include <CommonCrypto/CommonDigestSPI.h>
 #include <AvailabilityMacros.h>
 //#include <System/machine/cpu_capabilities.h>
 

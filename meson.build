@@ -1,7 +1,7 @@
 project('ld64', ['cpp', 'c'],
   version : '951.9',
   default_options : ['warning_level=3',
-                     'cpp_std=gnu++17'])
+                     'cpp_std=gnu++20'])
 
 archs = get_option('supported-archs')
 
