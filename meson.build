@@ -7,8 +7,13 @@ archs = get_option('supported-archs')
 
 srcs = []
 unwinddump_srcs = []
+machocheck_srcs = []
+objectdump_srcs = []
+objcimageinfo_srcs = []
+
 prunetrie_srcs = []
 prunetrie_inc = []
+
 incdirs = []
 subdir('src')
 subdir('doc')
@@ -44,6 +49,18 @@ ld64 = executable(get_option('program-prefix') + 'ld64', srcs,
 install_symlink(get_option('program-prefix') + 'ld', pointing_to : get_option('program-prefix') + 'ld64', install_dir : get_option('bindir'))
 
 unwinddump = executable(get_option('program-prefix') + 'unwinddump', unwinddump_srcs,
+  include_directories : incdirs,
+  install : true)
+
+machocheck = executable(get_option('program-prefix') + 'machocheck', machocheck_srcs,
+  include_directories : incdirs,
+  install : true)
+
+objectdump = executable(get_option('program-prefix') + 'ObjectDump', objectdump_srcs,
+  include_directories : incdirs,
+  install : true)
+
+objcimageinfo = executable(get_option('program-prefix') + 'objcimageinfo', objcimageinfo_srcs,
   include_directories : incdirs,
   install : true)
 

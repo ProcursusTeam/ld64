@@ -13,6 +13,7 @@ srcs += files('InputFiles.cpp',
               'version.c',
               'debugline.c')
 
+objectdump_srcs += files('PlatformSupport.cpp', 'debugline.c')
 incdirs += include_directories('.')
 
 subdir('code-sign-blobs')

@@ -7,4 +7,6 @@ srcs += files('archive_file.cpp',
               'textstub_dylib_file.cpp')
 
 incdirs += include_directories('.')
+objectdump_srcs += files('macho_relocatable_file.cpp')
+
 subdir('libunwind')
