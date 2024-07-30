@@ -58,7 +58,9 @@ extern "C" {
 #include <CommonCrypto/CommonDigest.h>
 #include <CommonCrypto/CommonDigestSPI.h>
 #include <AvailabilityMacros.h>
-//#include <System/machine/cpu_capabilities.h>
+#if defined(__APPLE__)
+#include <machine/cpu_capabilities.h>
+#endif
 
 #include "ExportsTrie.h"
 
